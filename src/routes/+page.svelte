@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import Button from '../lib/components/button.svelte';
+
+    let count = $state(0);
+
+    function countup() {count++}
+    function resetCount() {count = 0}
+</script>
+
+<Button text="Clicked {count} {count === 1 ? 'time' : 'times'}" onclick={countup}/>
+<Button text="Reset" onclick={resetCount} />
