@@ -2,23 +2,20 @@
     import { onMount } from 'svelte';
 	import { placeholder } from 'drizzle-orm';
     import { Button, ListTile } from '$lib';
+    import { db } from '$lib/server/db';
+    import { todos } from '$lib/server/db/schema';
 
+    export const actions = {
+        default: async ({ request }) => {
+            const data = await request.formData();
+            const text = data.get('text');
 
-    let todos = $state([
-        {
-            text: "Take out the trash",
-            id: crypto.randomUUID()
-        }, 
-        {
-            text: "Make dinner",
-            id: crypto.randomUUID()
-        }, 
-        {
-            text: "Fold laundry",
-            id: crypto.randomUUID()
+            if (text) {
+            // Drizzle handles the ID and 'done' status via schema defaults
+            await db.insert(todos).values({ text });
+            }
         }
-    ]);
-    // let todotext = $state('');
+    };
 
     function countup() {count++}
     function resetCount() {count = 0}
@@ -40,11 +37,19 @@
 </header>
 
 <div class="container">
-    <input id="newtodo" type="text" placeholder="New to-do item" onkeypress={(e) => {if (e.key === 'Enter') {newtodo(this.value)}}}>
-    {#each todos as todo (todo.id) }
+    <form action="" method="post">
+        <input 
+            id="newtodo"
+            name="text" 
+            type="text" 
+            placeholder="New to-do item" 
+            >
+        <button type="submit">➕</button>
+    </form>
+    {#each db.todos as todo (todo.id) }
         <ListTile text={todo.text} onclick={() => {
             // todos.splice(todos.indexOf(todo), 1);
-            todos = todos.filter(t => t.id !== todo.id);
+            db.todos = db.todos.filter(t => t.id !== todo.id);
             }}/>
     {/each}
     {#if !todos.length}
