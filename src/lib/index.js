@@ -1,2 +1,6 @@
+import Button from "./button.svelte";
+import ListTile from "./list_tile.svelte";
+
 // place files you want to import through the `$lib` alias in this folder.
-import Button from '../lib/components/button.svelte';
+export { Button };
+export { ListTile };
