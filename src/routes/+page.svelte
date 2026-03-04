@@ -2,8 +2,8 @@
     import { onMount } from 'svelte';
 	import { placeholder } from 'drizzle-orm';
     import { Button, ListTile } from '$lib';
-    import { db } from '$lib/server/db';
-    import { todos } from '$lib/server/db/schema';
+
+    let { data } = $props();
 
     export const actions = {
         default: async ({ request }) => {
